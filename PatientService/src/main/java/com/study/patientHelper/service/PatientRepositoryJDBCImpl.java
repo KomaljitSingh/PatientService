@@ -59,14 +59,14 @@ public class PatientRepositoryJDBCImpl implements PatientRepository{
 	@Override
 	public List<PatientDetail> getPatientDetail(int patientId) {
 		// TODO Auto-generated method stub
-		String patientSelectQuery = "SELECT DOCTORID,NAME,PHONE_NO,EMAIL,DEPARTMENT,"
-				+ "QUALIFICATION,SPECIALIST,YEAR_OF_EXPERIRENCE,DOB,PASSWORD,GENDER,STATUS,ADDRESS FROM DOCTOR"
-				+ " WHERE DOCTORID = ? AND DEPARTMENT = ? AND YEAR_OF_EXPERIRENCE = ? ";
+		String patientSelectQuery = "SELECT PATIENTID,NAME,PHONE_NO,EMAIL,"
+				+ "DOB,PASSWORD,GENDER,STATUS,ADDRESS FROM PATIENT"
+				+ " WHERE PATIENTID = ? ";
 		List<Object> sqlParameters = new ArrayList<Object>();
 		logger.debug("Executing doctor insert query: {} with params : [{}]", patientSelectQuery,
 				sqlParameters.toArray());
 		
-		List<PatientDetail> patientData = jdbcTemplate.query(patientSelectQuery,new Object[]{sqlParameters.toArray()},new PatientMapper());
+		List<PatientDetail> patientData = jdbcTemplate.query(patientSelectQuery,new Object[]{patientId},new PatientMapper());
 		return patientData;
 	}
 
