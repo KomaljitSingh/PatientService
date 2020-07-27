@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.study.patientHelper.service.PatientRepositoryJDBCImpl;
 import com.study.patientHelper.model.Address;
+import com.study.patientHelper.model.AppointmentDetail;
 import com.study.patientHelper.model.PatientDetail;
 
 @Repository
@@ -69,5 +70,23 @@ public class PatientRepositoryJDBCImpl implements PatientRepository{
 		List<PatientDetail> patientData = jdbcTemplate.query(patientSelectQuery,new Object[]{patientId},new PatientMapper());
 		return patientData;
 	}
-
+	
+	public void bookAppointment(AppointmentDetail appointmentDetail) {
+		String bookAppointmentQuery = "INSERT INTO APPOINTMENT (APPOINTMENTID,DOCTORID,PATIENTID,APPOINTMENT_DATE,APPOINTMENT_STATUS,STATUS)"
+				+ "VALUES (?,?,?,TO_DATE(?,'YYYY:MM:dd:HH24:MI:SS'),?,?)";
+		
+		List<Object> sqlParameters = new ArrayList<>();
+		
+		sqlParameters.add(appointmentDetail.getAppointmentId());
+		sqlParameters.add(appointmentDetail.getDoctorId());
+		sqlParameters.add(appointmentDetail.getPatientId());
+		sqlParameters.add(appointmentDetail.getAppointmentdate().format(DateTimeFormatter.ofPattern(DATE_FORMAT)));
+		sqlParameters.add(appointmentDetail.getAppointmentStatus());
+		sqlParameters.add(appointmentDetail.getStatus());
+		
+		logger.debug("Executing book appointment  insert query: {} with params : [{}]", bookAppointmentQuery,
+				sqlParameters.toArray());
+		
+		jdbcTemplate.update(bookAppointmentQuery,sqlParameters.toArray());
+	}
 }

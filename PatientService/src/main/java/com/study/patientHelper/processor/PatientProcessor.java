@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.study.patientHelper.controller.PatientController;
+import com.study.patientHelper.model.AppointmentDetail;
 import com.study.patientHelper.model.PatientDetail;
 import com.study.patientHelper.service.PatientRepository;
 
@@ -37,5 +38,12 @@ private static final Logger logger = LoggerFactory.getLogger(PatientController.c
 		logger.info("save doctor details is called with request as: "+patientId);
 		
 		return (List<PatientDetail>) patientRepository.getPatientDetail(patientId);
+	}
+	
+	public void bookAppointment(AppointmentDetail appointmentDetail){
+			
+			logger.info("save doctor details is called with request as: {} ",appointmentDetail);
+			
+			patientRepository.bookAppointment(appointmentDetail);
 	}
 }

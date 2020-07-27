@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.study.patientHelper.model.AppointmentDetail;
 import com.study.patientHelper.model.PatientDetail;
 import com.study.patientHelper.processor.PatientProcessor;
 
@@ -28,7 +29,7 @@ public class PatientController {
 
 	private static final Logger logger = LoggerFactory.getLogger(PatientController.class);
 	private final PatientProcessor patientProcessor;
-
+	
 	public PatientController(PatientProcessor patientProcessor){
 		this.patientProcessor = patientProcessor;
 	}
@@ -43,7 +44,6 @@ public class PatientController {
 	public ResponseEntity<Boolean> savePatientDetail(@RequestBody final PatientDetail patientDetail) {
 
 		logger.info("A request for save doctor detail is in proccess",patientDetail);
-
 		patientProcessor.savePatientDetail(patientDetail);
 		return ResponseEntity.status(HttpStatus.OK).body(true);
 	}
@@ -53,6 +53,13 @@ public class PatientController {
 		
 		logger.info("A request for get doctor detail is in process",patientId);
 		return patientProcessor.getPatientDetail(patientId);
+	}
+	
+	@PostMapping("/book/appointment")
+	public ResponseEntity<Boolean> bookAppointment(@RequestBody final AppointmentDetail appointmentDetail){
+		logger.info("Request for booking appointment ",appointmentDetail);
+		patientProcessor.bookAppointment(appointmentDetail);
+		return ResponseEntity.status(HttpStatus.OK).body(true);
 	}
 }
 
